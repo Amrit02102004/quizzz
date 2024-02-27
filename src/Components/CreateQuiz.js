@@ -1,23 +1,62 @@
-// src/components/Home.js
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './home.css'; // Import the CSS file for home page styling
+import React, { useState } from 'react';
+import QuizTitle from './QuizTitle';
+import Question from './Question';
+import './createQuiz.css';
+const CreateQuiz = () => {
+  const [title, setTitle] = useState('');
+  const [questions, setQuestions] = useState([{ text: '', options: ['', '', '', ''], correctOption: null }]);
 
-const Home = () => {
+  const handleQuestionChange = (index, value) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[index].text = value;
+    setQuestions(updatedQuestions);
+  };
+
+  const handleOptionChange = (questionIndex, optionIndex, value) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].options[optionIndex] = value;
+    setQuestions(updatedQuestions);
+  };
+
+  const handleCorrectOptionChange = (questionIndex, optionIndex) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].correctOption = optionIndex;
+    setQuestions(updatedQuestions);
+  };
+
+  const addQuestion = () => {
+    setQuestions([...questions, { text: '', options: ['', '', '', ''], correctOption: null }]);
+  };
+
+  const removeQuestion = (index) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions.splice(index, 1);
+    setQuestions(updatedQuestions);
+  };
+
+  const handleSubmitQuiz = () => {
+    //TODO -  Handle Backend
+    console.log({ title, questions });
+  };
+
   return (
-    <div className="home-container">
-      <div className="left-side">
-        <h2>Create a Quiz</h2>
-        <p>Create your own quiz and challenge others!</p>
-        <Link to="/createQuiz" className="btn">Create Quiz</Link>
-      </div>
-      <div className="right-side">
-        <h2>Join a Quiz</h2>
-        <p>Join a quiz created by others and test your knowledge!</p>
-        <Link to="/joinQuiz" className="btn">Join Quiz</Link>
-      </div>
+    <div className="create-quiz">
+      <h1>Create Quiz</h1>
+      <QuizTitle title={title} setTitle={setTitle} />
+      {questions.map((question, index) => (
+        <Question
+          key={index}
+          question={question}
+          handleQuestionChange={(value) => handleQuestionChange(index, value)}
+          handleOptionChange={(optionIndex, value) => handleOptionChange(index, optionIndex, value)}
+          handleCorrectOptionChange={(optionIndex) => handleCorrectOptionChange(index, optionIndex)}
+          removeQuestion={() => removeQuestion(index)}
+        />
+      ))}
+      <button onClick={addQuestion}>Add Question</button>
+      <button onClick={handleSubmitQuiz}>Submit Quiz</button>
     </div>
   );
 };
 
-export default Home;
+export default CreateQuiz;
