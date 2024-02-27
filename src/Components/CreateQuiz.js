@@ -35,7 +35,7 @@ const CreateQuiz = () => {
   };
 
   const handleSubmitQuiz = () => {
-    //TODO -  Handle Backendb 
+    //TODO -  Handle Backend
     console.log({ title, questions });
   };
 
