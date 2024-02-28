@@ -37,7 +37,7 @@ const CreateQuiz = () => {
 
   const handleSubmitQuiz = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/submit-quiz', { title, questions });
+      const response = await axios.post('https://quizzz-black.vercel.app/submit-quiz', { title, questions });
       console.log(response.data); 
     } catch (error) {
       console.error('Error submitting quiz:', error);

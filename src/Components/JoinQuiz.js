@@ -1,6 +1,5 @@
 // JoinQuiz.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './joinQuiz.css';
 import axios from 'axios';
 const JoinQuiz = () => {
@@ -13,10 +12,10 @@ const JoinQuiz = () => {
       return;
     }
     try {
-      const response = await axios.get(`http://localhost:5000/quiz/${code}`);
+      const response = await axios.get(`https://quizzz-black.vercel.app/quiz/${code}`);
       console.log(response.data); 
       if(response.status === 201) {
-        window.location.href = `/quiz/${code}?name=${name}`;
+        window.location.href = `/quizPage/${code}?name=${name}`;
       }
       else if(response.status === 403) {
         alert('Quiz does not exist');

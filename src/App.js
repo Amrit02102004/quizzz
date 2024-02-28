@@ -6,7 +6,7 @@ import Home from './Components/Home';
 import CreateQuiz from './Components/CreateQuiz';
 import JoinQuiz from './Components/JoinQuiz';
 import Quiz from './Components/Quiz';
-
+import QuizPage from './Components/QuizPage';
 const App = () => {
   return (
     <Router>
@@ -16,6 +16,7 @@ const App = () => {
           <Route path="/createQuiz" element={<CreateQuiz />} /> {/* Use "element" prop */}
           <Route path="/joinQuiz" element={<JoinQuiz />} /> {/* Use "element" prop */}
           <Route path="/quiz/:code" component={<Quiz />} /> {/* Use "component" prop */}
+          <Route path="/quizPage/:code" element={<QuizPage />} /> {/* Use "element" prop */}
         </Routes>
       </div>
     </Router>
