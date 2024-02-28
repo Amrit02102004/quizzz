@@ -5,6 +5,7 @@ import './App.css'; // Import the CSS file
 import Home from './Components/Home';
 import CreateQuiz from './Components/CreateQuiz';
 import JoinQuiz from './Components/JoinQuiz';
+import Quiz from './Components/Quiz';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/" element={<Home />} /> {/* Use "element" prop */}
           <Route path="/createQuiz" element={<CreateQuiz />} /> {/* Use "element" prop */}
           <Route path="/joinQuiz" element={<JoinQuiz />} /> {/* Use "element" prop */}
+          <Route path="/quiz/:code" component={<Quiz />} /> {/* Use "component" prop */}
         </Routes>
       </div>
     </Router>

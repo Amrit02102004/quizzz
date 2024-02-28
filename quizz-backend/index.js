@@ -1,23 +1,49 @@
+
 const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 5000;
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const shortid = require('shortid');
+const admin = require('firebase-admin');
 
-app.use(express.json());
-let quizzes = [];
-
-app.post('/api/quizzes', (req, res) => {
-  const { title, questions } = req.body;
-  if (!title || !questions || !Array.isArray(questions) || questions.length === 0) {
-    return res.status(400).json({ error: 'Invalid quiz data' });
-  }
-
-  const quizId = quizzes.length + 1;
-  const quiz = { id: quizId, title, questions };
-  quizzes.push(quiz);
-  
-  res.status(201).json(quiz);
+const serviceAccount = require('./auth.json');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
 });
+const app = express();
+app.use(bodyParser.json());
+app.use(cors());
 
+app.post('/submit-quiz', async (req, res) => {
+  const quizData = req.body;
+  const uniqueLink = shortid.generate(); 
+  try {
+    const db = admin.firestore();
+    const docRef = db.collection('quizzes').doc(uniqueLink);
+    await docRef.set(quizData);
+    console.log("Document written with ID: ", uniqueLink);
+    res.json({ success: true, uniqueLink: uniqueLink });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+app.get('/quiz/:code', async (req, res) => {
+  const { code } = req.params;
+
+  try {
+    const db = admin.firestore();
+    const quizRef = db.collection('quizzes').doc(code);
+    const doc = await quizRef.get();
+
+    if (doc.exists) {
+      res.sendStatus(201);
+    } else {
+      res.sendStatus(403);
+    }
+  } catch (error) {
+    res.sendStatus(404);
+  }
+});
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

@@ -15,7 +15,7 @@ node_modules/
 .idea/
 .vscode/
 *.sublime-workspace
-
+auth.json
 # Operating System files
 .DS_Store
 Thumbs.db

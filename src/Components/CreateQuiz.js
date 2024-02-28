@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import QuizTitle from './QuizTitle';
 import Question from './Question';
 import './createQuiz.css';
+import axios from 'axios';
 const CreateQuiz = () => {
   const [title, setTitle] = useState('');
   const [questions, setQuestions] = useState([{ text: '', options: ['', '', '', ''], correctOption: null }]);
@@ -34,8 +35,13 @@ const CreateQuiz = () => {
     setQuestions(updatedQuestions);
   };
 
-  const handleSubmitQuiz = () => {
-    //TODO -  Handle Backend
+  const handleSubmitQuiz = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/submit-quiz', { title, questions });
+      console.log(response.data); 
+    } catch (error) {
+      console.error('Error submitting quiz:', error);
+    }
     console.log({ title, questions });
   };
 
